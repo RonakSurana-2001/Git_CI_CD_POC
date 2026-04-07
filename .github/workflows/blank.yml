@@ -1,5 +1,8 @@
 name: Deploy to Environment
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -47,12 +50,11 @@ jobs:
         run: |
           git config user.name "RonakSurana-2001"
           git config user.email "ronaksurana2017@gmail.com"
-
-      - name: Push DEV_BRANCH → QA_BRANCH
-        run: |
-          git checkout DEV_BRANCH
-          git push origin DEV_BRANCH:QA_BRANCH --force
-
+          
+          git fetch origin
+          git checkout QA_BRANCH
+          git merge origin/DEV_BRANCH
+          git push origin QA_BRANCH
 
   deploy-qa:
     name: Deploy to QA
