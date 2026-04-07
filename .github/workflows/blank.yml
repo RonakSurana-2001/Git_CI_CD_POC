@@ -22,14 +22,14 @@ jobs:
 
       # Fetch config secret from GitHub Actions secret repository
       - run: echo '${{ secrets.COA_CONFIG }}' > COA_CONFIG
-      
-      - run: cat COA_CONFIG.json
-      
+            
       # Install Coalesce CLI tool, if not installed already
       - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
 
       # Print version number
       - run: npx coa --version
+
+      - run: cat COA_CONFIG.json
 
       # Create Deployment Plan
       - run: npx coa plan --config COA_CONFIG.json --out ./coa-plan --debug
