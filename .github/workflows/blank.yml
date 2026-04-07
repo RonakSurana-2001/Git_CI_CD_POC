@@ -23,6 +23,7 @@ jobs:
 
       # Fetch config secret
       - run: echo '${{ secrets.COA_CONFIG }}' >> COA_CONFIG
+      - run: cat COA_CONFIG  # Add this to see what's being written
 
       # Install Coalesce CLI tool
       - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
