@@ -1,48 +1,34 @@
 name: Deploy to Environment
 
 on:
-  push:
+push:
     branches:
-      - DEV_BRANCH
+    - DEV_BRANCH
 
-  workflow_dispatch:
-
+workflow_dispatch:
 env:
-  COA_VERSION: 7.31.3
-
+COA_VERSION: 7.31.3
 jobs:
-  deploy:
+deploy:
     runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-
-      # ✅ Write COA config safely
-      - name: Write COA_CONFIG
-        run: |
-          printf "%s" '${{ secrets.COA_CONFIG }}' > COA_CONFIG
-
-      # ✅ Validate JSON (debug)
-      - name: Validate COA_CONFIG
-        run: |
-          echo "=== COA_CONFIG Preview ==="
-          cat COA_CONFIG
-          echo ""
-          echo "=== Validating JSON ==="
-          jq . < COA_CONFIG
     
-      # Install Coalesce CLI tool
-      - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+    with:
+        node-version: 22.19.0
 
-      # Print version
-      - run: npx coa --version
+    # Fetch config secret from GitHub Actions secret repository, then write coa config to a temporary file
+    - run: echo '${{ secrets.COA_CONFIG }}' >> COA_CONFIG
+    
+    # Install Coalesce CLI tool, if not installed already
+    - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
 
-      # Create Deployment Plan
-      - run: npx coa plan --config COA_CONFIG --out ./coa-plan --debug
+    # Print version number
+    - run: npx coa --version
 
-      # Deploy Plan
-      - run: npx coa deploy --config COA_CONFIG --plan ./coa-plan --debug
+    # Create Deployment Plan
+    - run: npx coa plan --config COA_CONFIG --out ./coa-plan --debug
+
+    # Deploy Plan
+    - run: npx coa deploy --config COA_CONFIG --plan ./coa-plan --debug
