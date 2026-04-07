@@ -1,0 +1,11 @@
+fileVersion: 1
+id: "7"
+mappingDefinitions:
+  SRC:
+    database: JAFFLE_SHOP_DB
+    schema: RAW_DATA
+  TARGET:
+    database: JAFFLE_SHOP_DB
+    schema: SILVER
+name: DEV_ENV
+type: Environment
