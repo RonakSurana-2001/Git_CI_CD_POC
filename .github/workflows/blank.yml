@@ -23,8 +23,65 @@ jobs:
 
       # Fetch config secret
       - run: echo '${{ secrets.COA_CONFIG }}' >> COA_CONFIG
-      - run: cat COA_CONFIG  # Add this to see what's being written
+      # Debug: Display and validate the config file
+      - name: Verify COA_CONFIG
+        run: |
+          echo "=== COA_CONFIG Content ==="
+          cat COA_CONFIG
+          echo ""
+          echo "=== File Size and Type ==="
+          ls -lh COA_CONFIG
+          file COA_CONFIG
 
+      # Extract ALL keys and values from COA_CONFIG and export as environment variables
+      - name: Extract and Export All Config Values
+        run: |
+          echo "=== Extracting All Keys and Values from COA_CONFIG ==="
+          
+          # Check if jq is available (for JSON parsing)
+          if command -v jq &> /dev/null; then
+            echo "Format: JSON"
+            echo ""
+            echo "=== All Key-Value Pairs ==="
+            jq -r 'to_entries[] | "\(.key): \(.value)"' COA_CONFIG
+            echo ""
+            echo "=== Exporting to GITHUB_ENV ==="
+            jq -r 'to_entries[] | "\(.key)=\(.value)"' COA_CONFIG >> $GITHUB_ENV
+            echo "✓ All values exported to environment variables"
+          
+          # Fallback for YAML format
+          elif command -v yq &> /dev/null; then
+            echo "Format: YAML"
+            echo ""
+            echo "=== All Key-Value Pairs ==="
+            yq eval -o=json COA_CONFIG | jq -r 'to_entries[] | "\(.key): \(.value)"'
+            echo ""
+            echo "=== Exporting to GITHUB_ENV ==="
+            yq eval -o=json COA_CONFIG | jq -r 'to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+            echo "✓ All values exported to environment variables"
+          
+          # Fallback for plain text key=value format
+          else
+            echo "Format: Plain Text (key=value)"
+            echo ""
+            echo "=== All Key-Value Pairs ==="
+            grep -v '^#' COA_CONFIG | grep '=' || cat COA_CONFIG
+            echo ""
+            echo "=== Exporting to GITHUB_ENV ==="
+            grep -v '^#' COA_CONFIG | grep '=' >> $GITHUB_ENV || cat COA_CONFIG >> $GITHUB_ENV
+            echo "✓ All values exported to environment variables"
+          fi
+        
+      # Display all exported environment variables
+      - name: Display Exported Variables
+        run: |
+          echo "=== All Exported Environment Variables from COA_CONFIG ==="
+          # Parse the values and display them (masking sensitive data)
+          if command -v jq &> /dev/null; then
+            jq -r 'to_entries[] | "✓ \(.key) = \(.value | if length > 20 then .[:10] + "***" + .[-10:] else . end)"' COA_CONFIG
+          else
+            grep -v '^#' COA_CONFIG | grep '=' | sed 's/=.*/=***MASKED***/g' || echo "No variables found"
+          fi
       # Install Coalesce CLI tool
       - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
 
