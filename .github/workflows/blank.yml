@@ -35,29 +35,10 @@ jobs:
 
       - run: npx coa deploy --config COA_CONFIG --plan ./coa-plan --debug
 
-  request-qa-approval:
-    name: Request QA Approval
-    runs-on: ubuntu-latest
-    needs: deploy-dev
-    outputs:
-      approved: ${{ steps.wait-for-approval.outputs.approved }}
-
-    steps:
-      - name: Wait for QA Approval
-        id: wait-for-approval
-        uses: hmarr/auto-approve-action@v2
-        with:
-          # This is a trick: simulate manual approval via workflow_dispatch
-          # In practice, you manually trigger this workflow using inputs
-          # or you can just use a placeholder pause
-          message: "Manual approval required: continue to QA deploy"
-        continue-on-error: false
 
   promote-to-qa:
     name: Promote DEV → QA Branch
     runs-on: ubuntu-latest
-    needs: request-qa-approval
-    if: needs.request-qa-approval.outputs.approved == 'true'   
 
     steps:
       - uses: actions/checkout@v6
