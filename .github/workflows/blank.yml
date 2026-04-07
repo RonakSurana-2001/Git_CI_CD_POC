@@ -33,7 +33,7 @@ jobs:
           cat COA_CONFIG
           echo ""
           echo "=== Validating JSON ==="
-          jq . COA_CONFIG
+          jq . < COA_CONFIG
     
       # Install Coalesce CLI tool
       - run: npm list | grep "@coalescesoftware/coa@${{ env.COA_VERSION }}" || npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
