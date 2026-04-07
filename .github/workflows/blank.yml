@@ -29,7 +29,7 @@ jobs:
       # Print version number
       - run: npx coa --version
 
-      - run: cat COA_CONFIG.json
+      - run: cat COA_CONFIG
 
       # Create Deployment Plan
       - run: npx coa plan --config COA_CONFIG.json --out ./coa-plan --debug
