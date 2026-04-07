@@ -39,6 +39,7 @@ jobs:
   promote-to-qa:
     name: Promote DEV → QA Branch
     runs-on: ubuntu-latest
+    needs: deploy-dev
 
     steps:
       - uses: actions/checkout@v6
