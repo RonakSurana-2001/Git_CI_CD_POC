@@ -1,6 +1,6 @@
 fileVersion: 1
 id: dbd1fcfc-eb46-4a19-ba92-2b3890be75a6
-name: V_PAYMENT
+name: PAYMENT
 operation:
   config:
     insertStrategy: UNION
@@ -9,7 +9,7 @@ operation:
   deployEnabled: true
   description: ""
   isMultisource: false
-  locationName: SRC
+  locationName: TARGET
   materializationType: view
   metadata:
     appliedNodeTests: []
@@ -124,9 +124,9 @@ operation:
             nodeName: PAYMENT
         join:
           joinCondition: FROM {{ ref('SRC', 'PAYMENT') }} "PAYMENT"
-        name: V_PAYMENT
+        name: PAYMENT
         noLinkRefs: []
-  name: V_PAYMENT
+  name: PAYMENT
   overrideSQL: false
   schema: ""
   sqlType: View

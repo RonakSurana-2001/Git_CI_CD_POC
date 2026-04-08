@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 599f3dde-f09c-40d9-bc5d-a4732e099676
-name: V_ORDERS
+name: ORDERS
 operation:
   config:
     insertStrategy: UNION
@@ -9,7 +9,7 @@ operation:
   deployEnabled: true
   description: ""
   isMultisource: false
-  locationName: SRC
+  locationName: TARGET
   materializationType: view
   metadata:
     appliedNodeTests: []
@@ -96,9 +96,9 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SRC', 'ORDERS') }} "ORDERS"
-        name: V_ORDERS
+        name: ORDERS
         noLinkRefs: []
-  name: V_ORDERS
+  name: ORDERS
   overrideSQL: false
   schema: ""
   sqlType: View
