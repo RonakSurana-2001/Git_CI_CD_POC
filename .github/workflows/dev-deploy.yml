@@ -1,4 +1,4 @@
-name: Deploy to Environment
+name: Deploy to DEV Environment
 
 permissions:
   contents: write
@@ -43,7 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: QA_BRANCH
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
           
       - name: Configure Git
         run: |
@@ -63,4 +64,4 @@ jobs:
           git cherry-pick $LATEST_COMMIT
 
           # Push changes
-          git push origin QA_BRANCH
+          git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} QA_BRANCH
