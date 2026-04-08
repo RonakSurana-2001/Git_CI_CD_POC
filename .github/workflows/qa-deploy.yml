@@ -1,20 +1,23 @@
 name: QA Deployment
 
 on:
-  push:
-    branches:
-      - QA_BRANCH 
-
-env:
-  COA_VERSION: 7.31.3
+  workflow_run:
+    workflows: ["Deploy to Environment"]   # 👈 must match DEV name exactly
+    types:
+      - completed
 
 jobs:
   deploy-qa:
+    # ✅ Run only if DEV succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     runs-on: ubuntu-latest
-    environment: QA_ENV 
+    environment: QA_ENV
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: QA_BRANCH   # 👈 deploy from QA branch
 
       - uses: actions/setup-node@v6
         with:
@@ -22,7 +25,7 @@ jobs:
 
       - run: echo '${{ secrets.COA_CONFIG_QA }}' > COA_CONFIG
 
-      - run: npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
+      - run: npm install @coalescesoftware/coa@7.31.3
 
       - run: npx coa plan --config COA_CONFIG --out ./coa-plan --debug
 
