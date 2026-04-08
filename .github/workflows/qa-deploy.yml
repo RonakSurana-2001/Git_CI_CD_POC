@@ -5,7 +5,6 @@ on:
     workflows: ["Deploy to Environment"]   # 👈 must match DEV name exactly
     types:
       - completed
-    environment: QA_ENV
 
 jobs:
   deploy-qa:
@@ -24,6 +23,8 @@ jobs:
         with:
           node-version: 22.19.0
 
+      - run: echo '${{github.event.workflow_run.head_branch}}'
+      
       - run: echo '${{ secrets.COA_CONFIG_QA }}' > COA_CONFIG
 
       - run: npm install @coalescesoftware/coa@7.31.3
