@@ -54,4 +54,10 @@ jobs:
           git checkout QA_BRANCH
           git merge origin/DEV_BRANCH --allow-unrelated-histories -X theirs -m "Merge DEV into QA"
           git push origin QA_BRANCH
-
+          
+      - name: Trigger QA Deployment Workflow
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          # Use gh CLI to trigger the QA workflow on the specific QA_BRANCH ref
+          gh workflow run "QA Deployment" --ref QA_BRANCH
