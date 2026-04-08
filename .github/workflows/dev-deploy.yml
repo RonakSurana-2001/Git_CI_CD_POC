@@ -52,6 +52,6 @@ jobs:
           git remote set-url origin https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git fetch origin
           git checkout QA_BRANCH
-          git merge origin/DEV_BRANCH --allow-unrelated-histories -m "Merge DEV into QA"
+          git merge origin/DEV_BRANCH --allow-unrelated-histories -X theirs -m "Merge DEV into QA"
           git push origin QA_BRANCH
 
