@@ -1,10 +1,8 @@
 name: QA Deployment
 
 on:
-  workflow_run:
-    workflows: ["Deploy to Environment"]   # 👈 must match DEV name exactly
-    types:
-      - completed
+  push:
+    branch: QA_BRANCH
 
 jobs:
   deploy-qa:
