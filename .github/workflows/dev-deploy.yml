@@ -52,6 +52,6 @@ jobs:
           
           git fetch origin
           git checkout QA_BRANCH
-          git merge origin/DEV_BRANCH ----allow-unrelated-histories
+          git merge origin/DEV_BRANCH --allow-unrelated-histories
           git push origin QA_BRANCH
 
