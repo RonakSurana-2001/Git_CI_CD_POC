@@ -1,0 +1,29 @@
+name: QA Deployment
+
+on:
+  push:
+    branches:
+      - QA_BRANCH 
+
+env:
+  COA_VERSION: 7.31.3
+
+jobs:
+  deploy-qa:
+    runs-on: ubuntu-latest
+    environment: QA_ENV 
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.19.0
+
+      - run: echo '${{ secrets.COA_CONFIG_QA }}' > COA_CONFIG
+
+      - run: npm install @coalescesoftware/coa@${{ env.COA_VERSION }}
+
+      - run: npx coa plan --config COA_CONFIG --out ./coa-plan --debug
+
+      - run: npx coa deploy --config COA_CONFIG --plan ./coa-plan --debug
