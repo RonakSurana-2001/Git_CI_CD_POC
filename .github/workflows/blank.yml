@@ -56,8 +56,8 @@ jobs:
           
           git fetch origin
           git checkout QA_BRANCH
-          git merge origin/DEV_BRANCH
-          git push origin QA_BRANCH
+          git reset --hard origin/DEV_BRANCH
+          git push origin QA_BRANCH --force
 
 
       - uses: actions/setup-node@v6
