@@ -55,10 +55,19 @@ jobs:
           git config user.email "ronaksurana2017@gmail.com"
           
           git fetch origin
-          git checkout QA_BRANCH
-          git reset --hard origin/DEV_BRANCH
-          git push origin QA_BRANCH --force
+          # Checkout QA branch
+          git checkout QA_BRANCH || git checkout -b QA_BRANCH origin/QA_BRANCH
 
+          # Get latest commit from DEV
+          LATEST_COMMIT=$(git rev-parse origin/DEV_BRANCH)
+
+          echo "Latest DEV commit: $LATEST_COMMIT"
+
+          # Cherry-pick that commit into QA
+          git cherry-pick $LATEST_COMMIT
+
+          # Push changes
+          git push origin QA_BRANCH
 
       - uses: actions/setup-node@v6
         with:
