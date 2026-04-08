@@ -5,6 +5,7 @@ on:
     workflows: ["Deploy to Environment"]   # 👈 must match DEV name exactly
     types:
       - completed
+    environment: QA_ENV
 
 jobs:
   deploy-qa:
