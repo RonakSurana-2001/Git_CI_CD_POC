@@ -1,0 +1,82 @@
+fileVersion: 1
+id: c8199d59-4fb8-4524-a50e-586c95c2b306
+name: STG_CUSTOMERS_VW
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: ""
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6fbf1f6a-30f7-426f-9665-594af0b9d254
+          stepCounter: c8199d59-4fb8-4524-a50e-586c95c2b306
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 76060059-5f53-4963-ab10-05f39e4dea0a
+                stepCounter: f44105d6-f7a0-4331-aded-27048c6a9a25
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3026c291-9083-423d-95f8-792085eee20a
+          stepCounter: c8199d59-4fb8-4524-a50e-586c95c2b306
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: FIRST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9a03d94b-dc04-49d3-a713-c87c74b12b7f
+                stepCounter: f44105d6-f7a0-4331-aded-27048c6a9a25
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 018351a5-a6f6-42d9-8565-3a912470d3ba
+          stepCounter: c8199d59-4fb8-4524-a50e-586c95c2b306
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: LAST_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 826b0111-5a7a-4b22-9b2e-e6db0c4a332c
+                stepCounter: f44105d6-f7a0-4331-aded-27048c6a9a25
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CUSTOMERS_VW: f44105d6-f7a0-4331-aded-27048c6a9a25
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SRC
+            nodeName: CUSTOMERS_VW
+        join:
+          joinCondition: FROM {{ ref('SRC', 'CUSTOMERS_VW') }} "CUSTOMERS_VW"
+        name: STG_CUSTOMERS_VW
+        noLinkRefs: []
+  name: STG_CUSTOMERS_VW
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
